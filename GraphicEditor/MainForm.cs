@@ -22,7 +22,13 @@ namespace GraphicEditorOOP
             this.Size = new Size(900, 600);
             this.MinimumSize = new Size(800, 400);
 
-            Panel toolPanel = new Panel { Dock = DockStyle.Top, Height = 50, BackColor = Color.WhiteSmoke };
+            FlowLayoutPanel toolPanel = new FlowLayoutPanel
+            {
+                Dock = DockStyle.Top,
+                AutoSize = true,
+                Padding = new Padding(5),
+                BackColor = Color.WhiteSmoke
+            };
 
             PictureBox canvasBox = new PictureBox
             {
@@ -34,17 +40,17 @@ namespace GraphicEditorOOP
             this.Controls.Add(canvasBox);
             this.Controls.Add(toolPanel);
 
-            Button btnPencil = new Button { Text = "Карандаш", Location = new Point(10, 12) };
-            Button btnLine = new Button { Text = "Линия", Location = new Point(90, 12) };
-            Button btnRect = new Button { Text = "Прямоугольник", Location = new Point(170, 12), Width = 110 };
-            Button btnEllipse = new Button { Text = "Эллипс", Location = new Point(290, 12) };
-            Button btnColor = new Button { Text = "Цвет...", Location = new Point(380, 12), BackColor = Color.Black, ForeColor = Color.White };
+            Button btnPencil = new Button { Text = "Карандаш", AutoSize = true };
+            Button btnLine = new Button { Text = "Линия", AutoSize = true };
+            Button btnRect = new Button { Text = "Прямоугольник", AutoSize = true };
+            Button btnEllipse = new Button { Text = "Эллипс", AutoSize = true };
+            Button btnColor = new Button { Text = "Цвет...", AutoSize = true, BackColor = Color.Black, ForeColor = Color.White };
 
-            Label lblThick = new Label { Text = "Толщина:", Location = new Point(470, 17), Width = 60 };
-            NumericUpDown nudThickness = new NumericUpDown { Location = new Point(530, 14), Width = 50, Minimum = 1, Maximum = 50, Value = 2 };
+            Label lblThick = new Label { Text = "Толщина:", AutoSize = true, Margin = new Padding(10, 8, 0, 0) };
+            NumericUpDown nudThickness = new NumericUpDown { Width = 50, Minimum = 1, Maximum = 50, Value = 2, Margin = new Padding(3, 5, 3, 3) };
 
-            Button btnClear = new Button { Text = "Очистить", Location = new Point(600, 12), Width = 90 };
-            Button btnSave = new Button { Text = "Сохранить", Location = new Point(700, 12), Width = 90 };
+            Button btnClear = new Button { Text = "Очистить", AutoSize = true, Margin = new Padding(20, 3, 3, 3) };
+            Button btnSave = new Button { Text = "Сохранить", AutoSize = true };
 
             toolPanel.Controls.AddRange(new Control[] { btnPencil, btnLine, btnRect, btnEllipse, btnColor, lblThick, nudThickness, btnClear, btnSave });
 
