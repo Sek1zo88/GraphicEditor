@@ -17,6 +17,7 @@ namespace GraphicEditorOOP
 
         private void InitializeComponent()
         {
+            this.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
             this.Text = "Графический редактор (OOP)";
             this.Size = new Size(900, 600);
             this.MinimumSize = new Size(800, 400);
