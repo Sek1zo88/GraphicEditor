@@ -16,6 +16,7 @@ namespace GraphicEditorOOP
         public abstract void MouseDown(Point p);
         public abstract void MouseMove(Point p, Graphics g);
         public abstract void MouseUp(Point p, Graphics g);
+        public virtual void DrawPreview(Graphics g) { }
 
         protected Pen GetPen() => new Pen(Color, Thickness)
         {
@@ -64,17 +65,25 @@ namespace GraphicEditorOOP
     public abstract class ShapeTool : DrawingTool
     {
         protected Point startPoint;
+        protected Point currentPoint;
 
         public override void MouseDown(Point p)
         {
             IsDrawing = true;
             startPoint = p;
+            currentPoint = p;
         }
 
         public override void MouseMove(Point p, Graphics g)
         {
             if (!IsDrawing) return;
-            DrawShape(g, startPoint, p);
+            currentPoint = p;
+        }
+
+        public override void DrawPreview(Graphics g)
+        {
+            if (!IsDrawing) return;
+            DrawShape(g, startPoint, currentPoint);
         }
 
         public override void MouseUp(Point p, Graphics g)

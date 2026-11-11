@@ -10,7 +10,6 @@ namespace GraphicEditorOOP
     {
         private PictureBox canvas;
         private Bitmap mainBitmap;
-        private Bitmap previewBitmap;
         private DrawingTool currentTool;
 
         public CanvasManager(PictureBox canvas)
@@ -20,6 +19,8 @@ namespace GraphicEditorOOP
             this.canvas.MouseMove += Canvas_MouseMove;
             this.canvas.MouseUp += Canvas_MouseUp;
             this.canvas.SizeChanged += Canvas_SizeChanged;
+
+            this.canvas.Paint += Canvas_Paint;
 
             InitBitmap(canvas.Width, canvas.Height);
         }
@@ -74,19 +75,22 @@ namespace GraphicEditorOOP
                     gMain.SmoothingMode = SmoothingMode.AntiAlias;
                     currentTool.MouseMove(e.Location, gMain);
                 }
-                canvas.Invalidate();
-                return;
             }
-
-            previewBitmap?.Dispose();
-            previewBitmap = (Bitmap)mainBitmap.Clone();
-
-            using (Graphics gPreview = Graphics.FromImage(previewBitmap))
+            else
             {
-                gPreview.SmoothingMode = SmoothingMode.AntiAlias;
-                currentTool.MouseMove(e.Location, gPreview);
+                currentTool.MouseMove(e.Location, null);
             }
-            canvas.Image = previewBitmap;
+
+            canvas.Invalidate();
+        }
+
+        private void Canvas_Paint(object sender, PaintEventArgs e)
+        {
+            if (currentTool != null && currentTool.RequiresPreview && currentTool.IsDrawing)
+            {
+                e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+                currentTool.DrawPreview(e.Graphics);
+            }
         }
 
         private void Canvas_MouseUp(object sender, MouseEventArgs e)
@@ -99,9 +103,7 @@ namespace GraphicEditorOOP
                 currentTool.MouseUp(e.Location, gMain);
             }
 
-            canvas.Image = mainBitmap;
-            previewBitmap?.Dispose();
-            previewBitmap = null;
+            canvas.Invalidate();
         }
     }
 }
