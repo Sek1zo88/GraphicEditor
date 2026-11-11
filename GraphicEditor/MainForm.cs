@@ -65,8 +65,31 @@ namespace GraphicEditorOOP
             btnEllipse.Click += (s, e) => toolController.SetTool(new EllipseTool());
 
             btnColor.Click += (s, e) => {
-                using (ColorDialog cd = new ColorDialog { Color = toolController.CurrentColor })
+                using (ColorDialog cd = new ColorDialog())
                 {
+                    cd.Color = toolController.CurrentColor;
+
+                    cd.FullOpen = true;
+
+                    cd.CustomColors = new int[] {
+            ColorTranslator.ToOle(Color.White),
+            ColorTranslator.ToOle(Color.LightGray),
+            ColorTranslator.ToOle(Color.Gray),
+            ColorTranslator.ToOle(Color.Black),
+            ColorTranslator.ToOle(Color.Red),
+            ColorTranslator.ToOle(Color.Orange),
+            ColorTranslator.ToOle(Color.Yellow),
+            ColorTranslator.ToOle(Color.Lime),
+            ColorTranslator.ToOle(Color.Cyan),
+            ColorTranslator.ToOle(Color.Blue),
+            ColorTranslator.ToOle(Color.Magenta),
+            ColorTranslator.ToOle(Color.Purple),
+            ColorTranslator.ToOle(Color.SaddleBrown),
+            ColorTranslator.ToOle(Color.Maroon),
+            ColorTranslator.ToOle(Color.Navy),
+            ColorTranslator.ToOle(Color.Teal)
+        };
+
                     if (cd.ShowDialog() == DialogResult.OK)
                     {
                         toolController.SetColor(cd.Color);
