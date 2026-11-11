@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GraphicEditorOOP;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -7,7 +8,7 @@ namespace GraphicEditorOOP
 {
     public abstract class DrawingTool
     {
-        public Color Color { get; set; } = Color.Black;
+        public virtual Color Color { get; set; } = Color.Black;
         public float Thickness { get; set; } = 2f;
         public bool IsDrawing { get; protected set; }
         public virtual bool RequiresPreview => true;
@@ -120,5 +121,13 @@ namespace GraphicEditorOOP
             using (var pen = GetPen())
                 g.DrawEllipse(pen, GetRectangle(start, end));
         }
+    }
+}
+public class EraserTool : PencilTool
+{
+    public override Color Color
+    {
+        get => System.Drawing.Color.White;
+        set {}
     }
 }

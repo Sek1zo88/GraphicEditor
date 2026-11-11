@@ -30,17 +30,27 @@ namespace GraphicEditorOOP
                 BackColor = Color.WhiteSmoke
             };
 
-            PictureBox canvasBox = new PictureBox
+            Panel scrollContainer = new Panel
             {
                 Dock = DockStyle.Fill,
+                AutoScroll = true,
+                BackColor = Color.DarkGray
+            };
+
+            PictureBox canvasBox = new PictureBox
+            {
+                Size = new Size(3000, 3000),
+                Location = new Point(0, 0),
                 BackColor = Color.White,
                 Cursor = Cursors.Cross
             };
 
-            this.Controls.Add(canvasBox);
+            scrollContainer.Controls.Add(canvasBox);
+            this.Controls.Add(scrollContainer);
             this.Controls.Add(toolPanel);
 
             Button btnPencil = new Button { Text = "Карандаш", AutoSize = true };
+            Button btnEraser = new Button { Text = "Ластик", AutoSize = true };
             Button btnLine = new Button { Text = "Линия", AutoSize = true };
             Button btnRect = new Button { Text = "Прямоугольник", AutoSize = true };
             Button btnEllipse = new Button { Text = "Эллипс", AutoSize = true };
@@ -52,7 +62,7 @@ namespace GraphicEditorOOP
             Button btnClear = new Button { Text = "Очистить", AutoSize = true, Margin = new Padding(20, 3, 3, 3) };
             Button btnSave = new Button { Text = "Сохранить", AutoSize = true };
 
-            toolPanel.Controls.AddRange(new Control[] { btnPencil, btnLine, btnRect, btnEllipse, btnColor, lblThick, nudThickness, btnClear, btnSave });
+            toolPanel.Controls.AddRange(new Control[] { btnPencil, btnEraser, btnLine, btnRect, btnEllipse, btnColor, lblThick, nudThickness, btnClear, btnSave });
 
             canvasManager = new CanvasManager(canvasBox);
             toolController = new ToolController(canvasManager);
@@ -60,6 +70,7 @@ namespace GraphicEditorOOP
             toolController.SetTool(new PencilTool());
 
             btnPencil.Click += (s, e) => toolController.SetTool(new PencilTool());
+            btnEraser.Click += (s, e) => toolController.SetTool(new EraserTool());
             btnLine.Click += (s, e) => toolController.SetTool(new LineTool());
             btnRect.Click += (s, e) => toolController.SetTool(new RectangleTool());
             btnEllipse.Click += (s, e) => toolController.SetTool(new EllipseTool());
@@ -68,28 +79,13 @@ namespace GraphicEditorOOP
                 using (ColorDialog cd = new ColorDialog())
                 {
                     cd.Color = toolController.CurrentColor;
-
                     cd.FullOpen = true;
-
                     cd.CustomColors = new int[] {
-            ColorTranslator.ToOle(Color.White),
-            ColorTranslator.ToOle(Color.LightGray),
-            ColorTranslator.ToOle(Color.Gray),
-            ColorTranslator.ToOle(Color.Black),
-            ColorTranslator.ToOle(Color.Red),
-            ColorTranslator.ToOle(Color.Orange),
-            ColorTranslator.ToOle(Color.Yellow),
-            ColorTranslator.ToOle(Color.Lime),
-            ColorTranslator.ToOle(Color.Cyan),
-            ColorTranslator.ToOle(Color.Blue),
-            ColorTranslator.ToOle(Color.Magenta),
-            ColorTranslator.ToOle(Color.Purple),
-            ColorTranslator.ToOle(Color.SaddleBrown),
-            ColorTranslator.ToOle(Color.Maroon),
-            ColorTranslator.ToOle(Color.Navy),
-            ColorTranslator.ToOle(Color.Teal)
-        };
-
+                ColorTranslator.ToOle(Color.White), ColorTranslator.ToOle(Color.LightGray), ColorTranslator.ToOle(Color.Gray), ColorTranslator.ToOle(Color.Black),
+                ColorTranslator.ToOle(Color.Red), ColorTranslator.ToOle(Color.Orange), ColorTranslator.ToOle(Color.Yellow), ColorTranslator.ToOle(Color.Lime),
+                ColorTranslator.ToOle(Color.Cyan), ColorTranslator.ToOle(Color.Blue), ColorTranslator.ToOle(Color.Magenta), ColorTranslator.ToOle(Color.Purple),
+                ColorTranslator.ToOle(Color.SaddleBrown), ColorTranslator.ToOle(Color.Maroon), ColorTranslator.ToOle(Color.Navy), ColorTranslator.ToOle(Color.Teal)
+            };
                     if (cd.ShowDialog() == DialogResult.OK)
                     {
                         toolController.SetColor(cd.Color);
