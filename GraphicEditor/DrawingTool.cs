@@ -10,6 +10,7 @@ namespace GraphicEditorOOP
         public Color Color { get; set; } = Color.Black;
         public float Thickness { get; set; } = 2f;
         public bool IsDrawing { get; protected set; }
+        public virtual bool RequiresPreview => true;
 
         public abstract void MouseDown(Point p);
         public abstract void MouseMove(Point p, Graphics g);
@@ -25,45 +26,37 @@ namespace GraphicEditorOOP
 
     public class PencilTool : DrawingTool
     {
-        private List<Point> points = new List<Point>();
+        private Point lastPoint;
+
+        public override bool RequiresPreview => false;
 
         public override void MouseDown(Point p)
         {
             IsDrawing = true;
-            points.Clear();
-            points.Add(p);
+            lastPoint = p;
         }
 
         public override void MouseMove(Point p, Graphics g)
         {
             if (!IsDrawing) return;
-            points.Add(p);
 
-            if (points.Count > 1)
-            {
-                using (var pen = GetPen())
-                    g.DrawLines(pen, points.ToArray());
-            }
+            using (var pen = GetPen())
+                g.DrawLine(pen, lastPoint, p);
+
+            lastPoint = p;
         }
 
         public override void MouseUp(Point p, Graphics g)
         {
             if (!IsDrawing) return;
-            points.Add(p);
 
-            if (points.Count > 2 || (points.Count == 2 && points[0] != points[1]))
-            {
-                using (var pen = GetPen())
-                    g.DrawLines(pen, points.ToArray());
-            }
-            else
+            if (lastPoint == p)
             {
                 using (var brush = new SolidBrush(Color))
                     g.FillEllipse(brush, p.X - Thickness / 2f, p.Y - Thickness / 2f, Thickness, Thickness);
             }
 
             IsDrawing = false;
-            points.Clear();
         }
     }
 

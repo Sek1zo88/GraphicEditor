@@ -67,6 +67,17 @@ namespace GraphicEditorOOP
         {
             if (currentTool == null || !currentTool.IsDrawing) return;
 
+            if (!currentTool.RequiresPreview)
+            {
+                using (Graphics gMain = Graphics.FromImage(mainBitmap))
+                {
+                    gMain.SmoothingMode = SmoothingMode.AntiAlias;
+                    currentTool.MouseMove(e.Location, gMain);
+                }
+                canvas.Invalidate();
+                return;
+            }
+
             previewBitmap?.Dispose();
             previewBitmap = (Bitmap)mainBitmap.Clone();
 
